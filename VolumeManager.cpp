@@ -135,7 +135,11 @@ void VolumeManager::handleSwitchEvent(NetlinkEvent *evt) {
 
     if (!strcmp(name, "usb_mass_storage")) {
 
-        if (!strcmp(state, "online"))  {
+#ifdef TARGET_IS_GALAXYS
+        if (!strncmp(state, "ums online", 10)) {
+#else
+        if (!strncmp(state, "online", 6)) {
+#endif
             notifyUmsConnected(true);
         } else {
             notifyUmsConnected(false);
@@ -805,9 +809,13 @@ int VolumeManager::shareVolume(const char *label, const char *method) {
     snprintf(nodepath,
              sizeof(nodepath), "/dev/block/vold/%d:%d",
              MAJOR(d), MINOR(d));
-
+#ifdef TARGET_IS_GALAXYS
+    if ((fd = open("/sys/devices/platform/s3c-usbgadget/gadget/lun0/file",
+                   O_WRONLY)) < 0) {
+#else
     if ((fd = open("/sys/devices/platform/usb_mass_storage/lun0/file",
                    O_WRONLY)) < 0) {
+#endif
         SLOGE("Unable to open ums lunfile (%s)", strerror(errno));
         return -1;
     }
@@ -849,7 +857,13 @@ int VolumeManager::unshareVolume(const char *label, const char *method) {
              sizeof(nodepath), "/dev/block/vold/%d:%d",
              MAJOR(d), MINOR(d));
 
-    if ((fd = open("/sys/devices/platform/usb_mass_storage/lun0/file", O_WRONLY)) < 0) {
+#ifdef TARGET_IS_GALAXYS
+    if ((fd = open("/sys/devices/platform/s3c-usbgadget/gadget/lun0/file",
+                   O_WRONLY)) < 0) {
+#else
+    if ((fd = open("/sys/devices/platform/usb_mass_storage/lun0/file",
+                   O_WRONLY)) < 0) {
+#endif
         SLOGE("Unable to open ums lunfile (%s)", strerror(errno));
         return -1;
     }

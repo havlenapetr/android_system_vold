@@ -34,6 +34,10 @@ LOCAL_C_INCLUDES :=                          \
 
 LOCAL_CFLAGS := 
 
+ifeq ($(TARGET_BOARD_PLATFORM),s5pc110)
+LOCAL_CFLAGS += -DTARGET_IS_GALAXYS
+endif
+
 LOCAL_SHARED_LIBRARIES :=               \
                           libsysutils   \
                           libcutils     \
@@ -55,5 +59,7 @@ LOCAL_CFLAGS :=
 LOCAL_SHARED_LIBRARIES := libcutils
 
 include $(BUILD_EXECUTABLE)
+
+include $(call all-makefiles-under,$(LOCAL_PATH))
 
 endif # ifeq ($(BUILD_VOLD,true)

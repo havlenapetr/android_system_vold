@@ -89,7 +89,11 @@ int main() {
         if ((fp = fopen("/sys/devices/virtual/switch/usb_mass_storage/state",
                          "r"))) {
             if (fgets(state, sizeof(state), fp)) {
+#ifdef TARGET_IS_GALAXYS
+                if (!strncmp(state, "ums online", 10)) {
+#else
                 if (!strncmp(state, "online", 6)) {
+#endif
                     vm->notifyUmsConnected(true);
                 } else {
                     vm->notifyUmsConnected(false);
