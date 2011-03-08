@@ -98,11 +98,12 @@ static const char *stateToStr(int state) {
         return "Unknown-Error";
 }
 
-Volume::Volume(VolumeManager *vm, const char *label, const char *mount_point) {
+Volume::Volume(VolumeManager *vm, const char *label, const char *mount_point, int gadgetFile) {
     mVm = vm;
     mDebug = false;
     mLabel = strdup(label);
     mMountpoint = strdup(mount_point);
+    mGadgetFile = gadgetFile;
     mState = Volume::State_Init;
     mCurrentlyMountedKdev = -1;
 }

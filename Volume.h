@@ -47,6 +47,7 @@ public:
 protected:
     char *mLabel;
     char *mMountpoint;
+    int mGadgetFile;
     VolumeManager *mVm;
     bool mDebug;
 
@@ -56,7 +57,7 @@ protected:
     dev_t mCurrentlyMountedKdev;
 
 public:
-    Volume(VolumeManager *vm, const char *label, const char *mount_point);
+    Volume(VolumeManager *vm, const char *label, const char *mount_point, int gadgetFile);
     virtual ~Volume();
 
     int mountVol();
@@ -65,6 +66,7 @@ public:
 
     const char *getLabel() { return mLabel; }
     const char *getMountpoint() { return mMountpoint; }
+    int getGadgetFile() { return mGadgetFile; }
     int getState() { return mState; }
 
     virtual int handleBlockEvent(NetlinkEvent *evt);

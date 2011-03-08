@@ -38,7 +38,7 @@ protected:
     unsigned char  mPendingPartMap;
 
 public:
-    DirectVolume(VolumeManager *vm, const char *label, const char *mount_point, int partIdx);
+    DirectVolume(VolumeManager *vm, const char *label, const char *mount_point, int gadgetFile, int partIdx);
     virtual ~DirectVolume();
 
     int addPath(const char *path);

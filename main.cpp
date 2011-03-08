@@ -175,6 +175,7 @@ static int process_config(VolumeManager *vm) {
     FILE *fp;
     int n = 0;
     char line[255];
+    int volCount = 0;
 
     if (!(fp = fopen("/etc/vold.fstab", "r"))) {
         return -1;
@@ -217,9 +218,9 @@ static int process_config(VolumeManager *vm) {
             }
 
             if (!strcmp(part, "auto")) {
-                dv = new DirectVolume(vm, label, mount_point, -1);
+                dv = new DirectVolume(vm, label, mount_point, volCount, -1);
             } else {
-                dv = new DirectVolume(vm, label, mount_point, atoi(part));
+                dv = new DirectVolume(vm, label, mount_point, volCount, atoi(part));
             }
 
             while((sysfs_path = strsep(&next, " \t"))) {
@@ -230,6 +231,7 @@ static int process_config(VolumeManager *vm) {
                 }
             }
             vm->addVolume(dv);
+            volCount++;
         } else if (!strcmp(type, "map_mount")) {
         } else {
             SLOGE("Unknown type '%s'", type);

@@ -809,13 +809,18 @@ int VolumeManager::shareVolume(const char *label, const char *method) {
     snprintf(nodepath,
              sizeof(nodepath), "/dev/block/vold/%d:%d",
              MAJOR(d), MINOR(d));
+
+    char syspath[255];
 #ifdef TARGET_IS_GALAXYS
-    if ((fd = open("/sys/devices/platform/s3c-usbgadget/gadget/lun0/file",
-                   O_WRONLY)) < 0) {
+    snprintf(syspath,
+             sizeof(syspath), "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file",
+             v->getGadgetFile());
 #else
-    if ((fd = open("/sys/devices/platform/usb_mass_storage/lun0/file",
-                   O_WRONLY)) < 0) {
+    snprintf(syspath,
+             sizeof(syspath), "/sys/devices/platform/usb_mass_storage/lun%d/file",
+             v->getGadgetFile());
 #endif
+    if ((fd = open(syspath, O_WRONLY)) < 0) {
         SLOGE("Unable to open ums lunfile (%s)", strerror(errno));
         return -1;
     }
@@ -857,13 +862,17 @@ int VolumeManager::unshareVolume(const char *label, const char *method) {
              sizeof(nodepath), "/dev/block/vold/%d:%d",
              MAJOR(d), MINOR(d));
 
+    char syspath[255];
 #ifdef TARGET_IS_GALAXYS
-    if ((fd = open("/sys/devices/platform/s3c-usbgadget/gadget/lun0/file",
-                   O_WRONLY)) < 0) {
+    snprintf(syspath,
+             sizeof(syspath), "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file",
+             v->getGadgetFile());
 #else
-    if ((fd = open("/sys/devices/platform/usb_mass_storage/lun0/file",
-                   O_WRONLY)) < 0) {
+    snprintf(syspath,
+             sizeof(syspath), "/sys/devices/platform/usb_mass_storage/lun%d/file",
+             v->getGadgetFile());
 #endif
+    if ((fd = open(syspath, O_WRONLY)) < 0) {
         SLOGE("Unable to open ums lunfile (%s)", strerror(errno));
         return -1;
     }

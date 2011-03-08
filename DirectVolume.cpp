@@ -33,8 +33,8 @@
 // #define PARTITION_DEBUG
 
 DirectVolume::DirectVolume(VolumeManager *vm, const char *label,
-                           const char *mount_point, int partIdx) :
-              Volume(vm, label, mount_point) {
+                           const char *mount_point, int gadgetFile, int partIdx) :
+              Volume(vm, label, mount_point, gadgetFile) {
     mPartIdx = partIdx;
 
     mPaths = new PathCollection();
