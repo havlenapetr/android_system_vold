@@ -806,16 +806,18 @@ int VolumeManager::shareVolume(const char *label, const char *method) {
 
     int fd;
     char nodepath[255];
-    snprintf(nodepath,
-             sizeof(nodepath), "/dev/block/vold/%d:%d",
-             MAJOR(d), MINOR(d));
-
     char syspath[255];
 #ifdef TARGET_IS_GALAXYS
+    snprintf(nodepath,
+             sizeof(nodepath), "/dev/block/vold/%d:%d",
+             MAJOR(d), MINOR(d) + 1);
     snprintf(syspath,
              sizeof(syspath), "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file",
              v->getGadgetFile());
 #else
+    snprintf(nodepath,
+             sizeof(nodepath), "/dev/block/vold/%d:%d",
+             MAJOR(d), MINOR(d));
     snprintf(syspath,
              sizeof(syspath), "/sys/devices/platform/usb_mass_storage/lun%d/file",
              v->getGadgetFile());
@@ -858,16 +860,18 @@ int VolumeManager::unshareVolume(const char *label, const char *method) {
 
     int fd;
     char nodepath[255];
-    snprintf(nodepath,
-             sizeof(nodepath), "/dev/block/vold/%d:%d",
-             MAJOR(d), MINOR(d));
-
     char syspath[255];
 #ifdef TARGET_IS_GALAXYS
+    snprintf(nodepath,
+             sizeof(nodepath), "/dev/block/vold/%d:%d",
+             MAJOR(d), MINOR(d) + 1);
     snprintf(syspath,
              sizeof(syspath), "/sys/devices/platform/s3c-usbgadget/gadget/lun%d/file",
              v->getGadgetFile());
 #else
+    snprintf(nodepath,
+             sizeof(nodepath), "/dev/block/vold/%d:%d",
+             MAJOR(d), MINOR(d));
     snprintf(syspath,
              sizeof(syspath), "/sys/devices/platform/usb_mass_storage/lun%d/file",
              v->getGadgetFile());
